@@ -4,9 +4,11 @@
 
 This repository is structured as follows:
 
-The `data` folder is where to download relevant data sources 
-The `run` folder stores output from the generative models 
-The `utils` folder stores useful functions that are sourced by the main notebooks
+`src`: toy programs
+`nb`:  jupyter notebooks with examples
+`data`:  relevant data sources 
+`run`:  stores output from the generative models 
+`utils`:  useful functions that are sourced by the main notebooks
 
 ## Getting started
 
