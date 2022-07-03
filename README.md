@@ -22,7 +22,7 @@
 
 Applications should be run from `src/`, relative to the `src/generator` module.
 
-After setting up the environment and retrieving the requisite datasets, applications can be run as follows.
+After setting up the environment and retrieving the requisite datasets, run the application with `-h` to list usage.
 
 ### Multi Layer Perceptron MLP
 
@@ -60,12 +60,19 @@ This repository is structured as follows:
  - `src/`:  **toy applications** in the root, and all relevant source code under `generator`
  - `src/generator`:  models and useful functions that are sourced by the examples
  - `src/run`:  created automatically by the toy examples, stores output from the generative models 
- - `saved_models`:  weights saved from models trained by apps under `src`. These can be loaded and used immediately for predictions without training.
+ - `saved_models`:  weights saved from models trained by apps under `src`. These can be loaded and used immediately for predictions without training if the user has knowledge of how to do that.
  - `generative_env.yml`: a tested conda environment; note, `LD_LIBRARY_PATH` variable must also be **exported**, see below
 
 ## Getting started
 
 ### Install libraries
+
+There are a few different approaches to running this code. One is to
+create a Google colab notebook and import the data/code there. Another
+is to set up docker and run a GPU-enabled container. Below are
+instructions for a third option, set up a python environment. These
+instructions have been tested on Ubuntu.
+
 To get started, first install the required libraries inside a virtual environment:
 
 ```
