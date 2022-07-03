@@ -3,8 +3,6 @@
 
 # # VAE Training
 # ## imports
-get_ipython().run_line_magic('load_ext', 'autoreload')
-get_ipython().run_line_magic('autoreload', '2')
 import os
 from generator.model.VAE import VariationalAutoencoder
 from generator.loaders import load_mnist
@@ -16,7 +14,7 @@ DATA_NAME = 'digits'
 RUN_FOLDER = 'run/{}/'.format(SECTION)
 RUN_FOLDER += '_'.join([RUN_ID, DATA_NAME])
 if not os.path.exists(RUN_FOLDER):
-    os.mkdir(RUN_FOLDER)
+    os.makedirs(RUN_FOLDER)
     os.mkdir(os.path.join(RUN_FOLDER, 'viz'))
     os.mkdir(os.path.join(RUN_FOLDER, 'images'))
     os.mkdir(os.path.join(RUN_FOLDER, 'weights'))
