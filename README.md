@@ -1,32 +1,22 @@
 # Generative Deep Learning
 
-## Structure
-
-This repository is structured as follows:
-
-`src/`:  **toy applications** in the root, and all relevant source code under `generator`
-`src/generator`:  models and useful functions that are sourced by the examples
-`src/run`:  created automatically by the toy examples, stores output from the generative models 
-`saved_models`:  weights saved from models trained by apps under `src`. These can be loaded and used immediately for predictions without training.
-`generative_env.yml`: a tested conda environment; note, `LD_LIBRARY_PATH` variable must also be **exported**, see below
-
 ## Contents
-
 - [Running apps](#running-apps)
-  - [Multi Layer Perceptron MLP](#multi-layer-perceptron-MLP)
-  - [Convolutional Neural Network CNN](#convolutional-neural-network-CNN)
-  - [Auto Encoder AE](#auto-encoder-AE)
-  - [Variational Auto Encoder AE](#variational-auto-encoder-VAE)
-  - [Generative Adversarial Network GAN](#generative-adversarial-network-GAN)
+  - [Multi Layer Perceptron MLP](#multi-layer-perceptron-mlp)
+  - [Convolutional Neural Network CNN](#convolutional-neural-network-cnn)
+  - [Autoencoder AE](#autoencoder-ae)
+  - [Variational Autoencoder VAE](#variational-autoencoder-vae)
+  - [Generative Adversarial Network GAN](#generative-adversarial-network-gan)
+- [Repo Structure](#repo-structure)
 - [Getting started](#getting-started)
   - [Install libraries](#install-libraries)
   - [Conda environment set-up](#conda-environment-set-up)
   - [Start notebook server](#start-notebook-server)
 - [Install data and other supporting apps](#install-data-and-other-supporting-apps)
   - [CIFAR-10](#cifar-10)
-  - [MNIST](#MNIST)
+  - [MNIST](#mnist)
   - [CelebA](#celeba)
-  - [Music3 data and software](#music3-data)
+  - [Music3 data and software](#music3-data-and-software)
 
 ## Running apps
 
@@ -46,22 +36,32 @@ No data needs to be retrieved for this simple application (not generative).
 
 `python cifar10_cnn.py`
 
-### Auto Encoder AE
+### Autoencoder AE
 
 No data needs to be retrieved for this simple application (not generative).
 
-`mnist_ae_train.py`
+`python mnist_ae_train.py`
 
-### Variable Auto Encoder VAE
+### Variational Autoencoder VAE
 The VAEs can be run on MNIST hand-writing data as follows:
  - `python mnist_vae_train.py`
  - `python mnist_vae_analysis.py`
+ 
  Install the celeb-A data (see below) to run the following:
  - `python celeba_vae_train.py`
  - `python celeba_vae_analysis.py`
 
-### Generative Adversarial Networks (GANs)
+### Generative Adversarial Network GAN
 Coming Soon!
+
+## Repo Structure
+
+This repository is structured as follows:
+ - `src/`:  **toy applications** in the root, and all relevant source code under `generator`
+ - `src/generator`:  models and useful functions that are sourced by the examples
+ - `src/run`:  created automatically by the toy examples, stores output from the generative models 
+ - `saved_models`:  weights saved from models trained by apps under `src`. These can be loaded and used immediately for predictions without training.
+ - `generative_env.yml`: a tested conda environment; note, `LD_LIBRARY_PATH` variable must also be **exported**, see below
 
 ## Getting started
 
@@ -173,7 +173,6 @@ jupyter notebook
 You can monitor your nvidia process with the following:
 ```
 nvidia-smi dmon
- 
 ```
 
 ## Install data and other supporting apps
