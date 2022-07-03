@@ -4,14 +4,68 @@
 
 This repository is structured as follows:
 
-`generator`: source code and classes for toy programs and models
-`nb`:  jupyter notebooks with examples
-`data`:  relevant data sources 
-`run`:  stores output from the generative models 
-`generator/utils`:  useful functions that are sourced by the main notebooks
+`src/`:  **toy applications** in the root, and all relevant source code under `generator`
+`src/generator`:  models and useful functions that are sourced by the examples
+`src/run`:  created automatically by the toy examples, stores output from the generative models 
+`saved_models`:  weights saved from models trained by apps under `src`. These can be loaded and used immediately for predictions without training.
+`generative_env.yml`: a tested conda environment; note, `LD_LIBRARY_PATH` variable must also be **exported**, see below
+
+## Contents
+
+- [Running apps](#running-apps)
+  - [Multi Layer Perceptron MLP](#multi-layer-perceptron-MLP)
+  - [Convolutional Neural Network CNN](#convolutional-neural-network-CNN)
+  - [Auto Encoder AE](#auto-encoder-AE)
+  - [Variational Auto Encoder AE](#variational-auto-encoder-VAE)
+  - [Generative Adversarial Network GAN](#generative-adversarial-network-GAN)
+- [Getting started](#getting-started)
+  - [Install libraries](#install-libraries)
+  - [Conda environment set-up](#conda-environment-set-up)
+  - [Start notebook server](#start-notebook-server)
+- [Install data and other supporting apps](#install-data-and-other-supporting-apps)
+  - [CIFAR-10](#cifar-10)
+  - [MNIST](#MNIST)
+  - [CelebA](#celeba)
+  - [Music3 data and software](#music3-data)
+
+## Running apps
+
+Applications should be run from `src/`, relative to the `src/generator` module.
+
+After setting up the environment and retrieving the requisite datasets, applications can be run as follows.
+
+### Multi Layer Perceptron MLP
+
+No data needs to be retrieved for this simple application (not generative).
+
+`python cifar10_mlp.py`
+
+### Convolutional Neural Network CNN
+
+No data needs to be retrieved for this simple application (not generative).
+
+`python cifar10_cnn.py`
+
+### Auto Encoder AE
+
+No data needs to be retrieved for this simple application (not generative).
+
+`mnist_ae_train.py`
+
+### Variable Auto Encoder VAE
+The VAEs can be run on MNIST hand-writing data as follows:
+ - `python mnist_vae_train.py`
+ - `python mnist_vae_analysis.py`
+ Install the celeb-A data (see below) to run the following:
+ - `python celeba_vae_train.py`
+ - `python celeba_vae_analysis.py`
+
+### Generative Adversarial Networks (GANs)
+Coming Soon!
 
 ## Getting started
 
+### Install libraries
 To get started, first install the required libraries inside a virtual environment:
 
 ```
@@ -28,11 +82,12 @@ nvidia-smi --query-gpu=gpu_name --format=csv|tail -n 1
 # install mamba for faster package management:
 # sometimes you have to repeat a mamba command, its still faster than conda
 conda install -n base conda-forge::mamba
+```
+###  Conda environment set-up
 
-###
-# BEGIN [1] Conda environment set-up
-###
+Create a virtual environment using mamba (because it's faster than conda).
 
+```
 mamba create -n generative tensorflow-gpu -c conda-forge
 conda activate generative
 # tested under:
@@ -42,8 +97,8 @@ conda activate generative
 
 pip install tf-explain
 
-##############
-# BEGIN [2]: UPGRADE (or downgrade) TF:
+# #############
+# BEGIN: UPGRADE (or downgrade) TF:
 # If you wantt o upgrade tf, do at your own risk:
 # install/uninstall/install some tf/cuda packages to get the right version combination
 
@@ -71,8 +126,8 @@ pip install tensorflow-gpu${TENSORFLOW_VERSION}
 #ls ~/miniconda3/envs/generative/lib/libcusolver*
 # or 
 ls $CONDA_PREFIX/lib/libcusolver*
-# END [2]: UPGRADE (or downgrade) TF
-#######################
+# END: UPGRADE (or downgrade) TF
+# ######################
 
 # make sure tf can find your cuda libraries
 pushd $CONDA_PREFIX
@@ -109,43 +164,75 @@ python -c "import tensorflow as tf; print(tf.config.list_physical_devices('GPU')
 # save your environment so you can version control and/or use it on other machines, if desired
 conda env export --file generative_env.yml
 # CAVEAT - LD_LIBRARY_PATH must be exported for tf to work; but the yml above only 'sets' it.
+```
 
-###
-# END [1] Conda environment set-up
-###
+### Start notebook server
+```
+jupyter notebook
+```
+You can monitor your nvidia process with the following:
+```
+nvidia-smi dmon
+ 
+```
 
-####
-# Install data and other apps
-###
+## Install data and other supporting apps
 
-# install music3 for the music generator; this command only works for ubuntu:
+Install data to `./src/data` to run with the provided apps
+
+### CIFAR-10
+
+(CIFAR-10)[https://www.cs.toronto.edu/~kriz/cifar.html] has 80 million tiny images, each labeled with one of 10 classes: 
+`'airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck'`
+
+Nothing extra needs to be done to retrieve these data; The model loads them directly during runtime with: `cifar10.load_data()`
+
+### mnist
+
+(MNIST)[http://mmlab.ie.cuhk.edu.hk/projects/CelebA.html] has 60k examples of labeled, hand-written digits.
+
+Nothing extra needs to be done to retrieve these data; The model loads them directly during runtime with: `load_mnist()`.
+
+### CelebA
+
+(CelebA)[http://mmlab.ie.cuhk.edu.hk/projects/CelebA.html] has 200K+ images of celebrity faces labeled with one of 40 classes. Read more here: 
+
+This dataset must be downloaded to a directory structure common for CNN training. The following steps detail how to:
+
+ * download the data from celeba (200,000+ faces, ) and extract to `generator/data/celeba/`. This will result in 200k+ jpeg's under `data/celeba/img_align_celeba`, named `000001.jpg`, `000002.jpg`, etc.
+ * Set-up the labels for latent-space arithmatic
+
+Detailed steps: 
+ 1. Get a google account if you don't have one.
+ 2. Go to the celebA website: http://mmlab.ie.cuhk.edu.hk/projects/CelebA.html
+ 3. Select the Aligned&Cropped Images. This will take you to the Google Cloud Drive site.: https://drive.google.com/open?id=0B7EVK8r0v71pWEZsZE9oNnFzTm8
+ 4. Sign in with your Google account
+ 5. Download: 
+   a. Colab Notebooks > GAN > CelebA > Anno > `list_attr_celeba.txt`
+   b. Colab Notebooks > GAN > CelebA > Img > `img_align_celeba.zip`
+ 6. Unzip img_align_celeba.zip to `generator/data/celeb`. This will create `img_align_celeba/*jpg`
+ 7. Move the list_attr_celeba.txt to `generator/data/celeb/list_attr_celeba.csv`.
+ 8. Delete the first line with count of the number of lines in the file (202599).
+ 9. Prepend the header line that start with, "5_o_Clock_Shadow" with "image_id,...".
+
+or get it from kaggle: https://www.kaggle.com/datasets/jessicali9530/celeba-dataset?resource=download
+
+### Music3 data and software
+
+Install music3 data for the music generator. These commands only works for ubuntu:
+```
 sudo add-apt-repository ppa:mscore-ubuntu/mscore-stable
 sudo apt-get update
 sudo apt-get install musescore
 # mscore v2 is installed, but the GAN looks for mscore3:
 sudo ln -s /usr/bin/mscore /usr/bin/mscore3
-# https://musescore.org for other operating systems
-
-# download Bach midis here:
-# http://www.jsbach.net/midi/midi_solo_cello.html
-# and chorales here:
-# https://github.com/czhuang/JSB-Chorales-dataset
-# read more here:
-# https://towardsdatascience.com/how-to-generate-music-using-a-lstm-neural-network-in-keras-68786834d4c5
-# and find more data here:
-# https://github.com/Skuldur/Classical-Piano-Composer
-# Celebrity faces for data/celeb:
-# http://mmlab.ie.cuhk.edu.hk/projects/CelebA.html
-
-# start your notebook server
-#LD_LIBRARY_PATH=~/miniconda3/envs/generative/lib 
-jupyter notebook
-
-# you can monitor your nvidia process with the following:
-nvidia-smi dmon
- 
 ```
+You can also get mscore 3 at https://musescore.org for other operating systems
+
+More music:
+ * Bach midis here: http://www.jsbach.net/midi/midi_solo_cello.html
+ * Chorales here: https://github.com/czhuang/JSB-Chorales-dataset
+ * More data here: https://github.com/Skuldur/Classical-Piano-Composer
  
-
-
-
+Read more here:
+ * https://towardsdatascience.com/how-to-generate-music-using-a-lstm-neural-network-in-keras-68786834d4c5

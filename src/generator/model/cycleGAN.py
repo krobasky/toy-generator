@@ -7,7 +7,7 @@ from tensorflow.keras.layers import BatchNormalization, Activation, ZeroPadding2
 
 from tensorflow.keras.layers import UpSampling2D, Conv2D, Conv2DTranspose, add
 
-from models.layers.layers import ReflectionPadding2D
+from generator.layers import ReflectionPadding2D
 from tensorflow.keras.models import Sequential, Model
 from tensorflow.keras.initializers import RandomNormal
 from tensorflow.keras.optimizers import Adam

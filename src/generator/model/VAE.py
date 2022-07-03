@@ -8,7 +8,7 @@ from tensorflow.keras.utils import plot_model
 
 import tensorflow as tf
 
-from utils.callbacks import CustomCallback, step_decay_schedule 
+from generator.callbacks import CustomCallback, step_decay_schedule 
 
 import numpy as np
 import json
