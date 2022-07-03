@@ -16,16 +16,6 @@ opts=p(
     , scale_value=255.0
 )
 
-# # imports
-import numpy as np
-import matplotlib.pyplot as plt
-from tensorflow.keras.layers import Input, Flatten, Dense, Conv2D
-from tensorflow.keras.models import Model
-from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.utils import to_categorical
-from tensorflow.keras.datasets import cifar10
-
-
 NUM_CLASSES = opts.num_classes
 INPUT_SHAPE= opts.input_shape
 SCALE_VALUE= opts.scale_value
@@ -36,10 +26,14 @@ if opts.quiet == True:
 BATCH_SIZE=opts.batch_size
 LEARNING_RATE=opts.learning_rate
 
-'''
-print(NUM_CLASSES,INPUT_SHAPE,SCALE_VALUE,EPOCHS,VERBOSE,BATCH_SIZE,LEARNING_RATE)
-exit()
-'''
+# # imports
+import numpy as np
+import matplotlib.pyplot as plt
+from tensorflow.keras.layers import Input, Flatten, Dense, Conv2D
+from tensorflow.keras.models import Model
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.utils import to_categorical
+from tensorflow.keras.datasets import cifar10
 
 # # data 
 
