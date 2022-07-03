@@ -13,7 +13,7 @@ DATA_NAME = 'digits'
 RUN_FOLDER = 'run/{}/'.format(MODEL_TYPE)
 RUN_FOLDER += '_'.join([RUN_ID, DATA_NAME])
 if not os.path.exists(RUN_FOLDER):
-    os.mkdir(RUN_FOLDER)
+    os.makedirs(RUN_FOLDER)
     os.mkdir(os.path.join(RUN_FOLDER, 'viz'))
     os.mkdir(os.path.join(RUN_FOLDER, 'images'))
     os.mkdir(os.path.join(RUN_FOLDER, 'weights'))
