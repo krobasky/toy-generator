@@ -89,6 +89,8 @@ conda deactivate
 conda activate generative
 
 mamba install --file requirements.txt -c conda-forge -c esri
+# add in latest from keras-contrib to pick up new InstanceNormalization layer
+pip install git+https://www.github.com/keras-team/keras-contrib.git
 
 ### test:
 python -c "import tensorflow as tf; print(tf.reduce_sum(tf.random.normal([1000, 1000])))"

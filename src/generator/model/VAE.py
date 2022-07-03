@@ -52,12 +52,9 @@ class VAEModel(Model):
         }
 
     def call(self,inputs):
-        latent = self.encoder(inputs)
+        z_mean, z_log_var, latent = self.encoder(inputs)
+        # latent = self.encoder(inputs)
         return self.decoder(latent)
-
-
-
-
 
 class VariationalAutoencoder():
     def __init__(self
@@ -129,7 +126,7 @@ class VariationalAutoencoder():
         self.z = Sampling(name='encoder_output')([self.mu, self.log_var])
 
         self.encoder = Model(encoder_input, [self.mu, self.log_var, self.z], name = 'encoder')
-        
+
         
 
         ### THE DECODER
@@ -162,6 +159,7 @@ class VariationalAutoencoder():
             
 
         decoder_output = x
+
 
         self.decoder = Model(decoder_input, decoder_output, name = 'decoder')
 
@@ -198,7 +196,7 @@ class VariationalAutoencoder():
                 , self.use_batch_norm
                 , self.use_dropout
                 ], f)
-
+        
         self.plot_model(folder)
 
 
@@ -210,7 +208,7 @@ class VariationalAutoencoder():
         custom_callback = CustomCallback(run_folder, print_every_n_batches, initial_epoch, self)
         lr_sched = step_decay_schedule(initial_lr=self.learning_rate, decay_factor=lr_decay, step_size=1)
         
-        checkpoint_filepath=os.path.join(run_folder, "weights/weights-{epoch:03d}-{loss:.2f}.h5")
+        checkpoint_filepath=os.path.join(run_folder, "weights/weights-{epoch:03d}.h5")
         checkpoint1 = ModelCheckpoint(checkpoint_filepath, save_weights_only = True, verbose=1)
         checkpoint2 = ModelCheckpoint(os.path.join(run_folder, 'weights/weights.h5'), save_weights_only = True, verbose=1)
 
@@ -233,7 +231,7 @@ class VariationalAutoencoder():
         custom_callback = CustomCallback(run_folder, print_every_n_batches, initial_epoch, self)
         lr_sched = step_decay_schedule(initial_lr=self.learning_rate, decay_factor=lr_decay, step_size=1)
 
-        checkpoint_filepath=os.path.join(run_folder, "weights/weights-{epoch:03d}-{loss:.2f}.h5")
+        checkpoint_filepath=os.path.join(run_folder, "weights/weights-{epoch:03d}.h5")
         checkpoint1 = ModelCheckpoint(checkpoint_filepath, save_weights_only = True, verbose=1)
         checkpoint2 = ModelCheckpoint(os.path.join(run_folder, 'weights/weights.h5'), save_weights_only = True, verbose=1)
 
@@ -242,13 +240,14 @@ class VariationalAutoencoder():
         self.model.save_weights(os.path.join(run_folder, 'weights/weights.h5'))
 
 
-        self.model.fit(
+        self.history = self.model.fit(
             data_flow
             , shuffle = True
             , epochs = epochs
             , initial_epoch = initial_epoch
             , callbacks = callbacks_list
-            , steps_per_epoch=steps_per_epoch 
+            , steps_per_epoch=steps_per_epoch
+            , verbose = 0
             )
 
 
@@ -256,6 +255,10 @@ class VariationalAutoencoder():
 
     
     def plot_model(self, run_folder):
+
+        input_shape=(None,)+self.input_dim
+        self.model.build(input_shape)
+        
         plot_model(self.model, to_file=os.path.join(run_folder ,'viz/model.png'), show_shapes = True, show_layer_names = True)
         plot_model(self.encoder, to_file=os.path.join(run_folder ,'viz/encoder.png'), show_shapes = True, show_layer_names = True)
         plot_model(self.decoder, to_file=os.path.join(run_folder ,'viz/decoder.png'), show_shapes = True, show_layer_names = True)
