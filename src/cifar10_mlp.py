@@ -31,9 +31,8 @@ INPUT_SHAPE= opts.input_shape
 SCALE_VALUE= opts.scale_value
 EPOCHS= opts.epochs
 VERBOSE=True
-# xxx broken
-#if opts.not_verbose == True:
-#    VERBOSE=False
+if opts.quiet == True:
+    VERBOSE=False
 BATCH_SIZE=opts.batch_size
 LEARNING_RATE=opts.learning_rate
 

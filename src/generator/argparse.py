@@ -30,9 +30,8 @@ def p(description,
                     )
 
     # xxx broken
-    _p.add_argument("--not_verbose", '-n',
-                    action='store_false',
-                    default=False,
+    _p.add_argument("--quiet", '-q',
+                    action='store_true',
                     help=f'Turn off epoch training output'
                     )
     
