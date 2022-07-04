@@ -12,6 +12,12 @@ def p(description
       , kernel_size=(3,3,3,3)
       , stride=(1,2,1,2)
       , z_dim = 200
+      , d_filter=(32,32,64,64)
+      , d_kernel_size=(3,3,3,3)
+      , d_stride=(1,2,1,2)
+      , r_loss_factor=1000
+      , print_every_n_batches=100
+      , initial_epoch=0
       ):
     
     _p = argparse.ArgumentParser(description=description)
@@ -34,7 +40,6 @@ def p(description
                     help=f'[{batch_size}] Number of observations used in a batch for each training step'
                     )
 
-    # xxx broken
     _p.add_argument("--quiet", '-q',
                     action='store_true',
                     help=f'Turn off epoch training output'
@@ -80,12 +85,51 @@ def p(description
                     help=f'[{stride}] A list of strides that can be used in the model layers',
                     )
 
+    _p.add_argument("--d_filter", '-df',
+                    type=int,
+                    nargs='+',
+                    default=d_filter,
+                    help=f'[{d_filter}] A list of filters that can be used in the model layers',
+                    )
+
+    _p.add_argument("--d_kernel_size", '-dk',
+                    type=int,
+                    nargs='+',
+                    default=d_kernel_size,
+                    help=f'[{d_kernel_size}] A list of kernels that, with the filters, can be used in the model layers',
+                    )
+
+    _p.add_argument("--d_stride", '-dt',
+                    type=int,
+                    nargs='+',
+                    default=stride,
+                    help=f'[{d_stride}] A list of strides that can be used in the model layers',
+                    )
+
     _p.add_argument("--z_dim", "-z`",
                     type=int,
                     default=num_classes,
                     help=f'[{z_dim}] Number of dimensions in the latent space'
                     )
     
+    _p.add_argument("--r_loss_factor", '-r',
+                    type=int,
+                    default=r_loss_factor,
+                    help=f'[{r_loss_factor}] factor for weighting loss from lack of normalization vis loss from accuracy.'
+                    )
+
+    _p.add_argument("--print_every_n_batches", '-p',
+                    type=int,
+                    default=print_every_n_batches,
+                    help=f'[{print_every_n_batches}] affects verbosity of the training output.'
+                    )
+
+    _p.add_argument("--initial_epoch", '-n',
+                    type=int,
+                    default=initial_epoch,
+                    help=f'[{initial_epoch}] which epoch to start on.'
+                    )
+
     
     opts=_p.parse_args()
     return opts

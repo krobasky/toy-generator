@@ -1,5 +1,52 @@
 #!/usr/bin/env python
+from generator.argparse import p
+opts=p(
+"""Demonstrates VAE training.
+  Inputs: 
+    Downloads MNIST from internet
+  Outputs: (STDOUT)
+    - model summary
+    - verbose training epochs
+    - model loss and accuracy in final line"""
+    , epochs=200
+    , learning_rate=0.0005
+    , batch_size=32
+    , input_shape=(28,28,1)
+    , scale_value=255.0
+    , filter=[32,64,64, 64]
+    , kernel_size=[3,3,3,3]
+    , stride=[1,2,2,1]
+    , z_dim=2
+    , d_filter=[64,64,32,1]
+    , d_kernel_size=[3,3,3,3]
+    , d_stride=[1,2,2,1]
+    , r_loss_factor=1000
+    , print_every_n_batches=100
+    , initial_epoch=0 
+)
 
+INPUT_SHAPE= opts.input_shape
+SCALE_VALUE= opts.scale_value
+EPOCHS= opts.epochs
+VERBOSE=True
+if opts.quiet == True:
+    VERBOSE=False
+BATCH_SIZE=opts.batch_size
+LEARNING_RATE=opts.learning_rate
+
+FILTER=opts.filter
+KERNEL_SIZE=opts.kernel_size
+STRIDE=opts.stride
+
+D_FILTER=opts.d_filter
+D_KERNEL_SIZE=opts.d_kernel_size
+D_STRIDE=opts.d_stride
+R_LOSS_FACTOR = opts.r_loss_factor
+PRINT_EVERY_N_BATCHE = opts.print_every_n_batches
+INITIAL_EPOCH = opts.initial_epoch
+
+Z_DIM = opts.z_dim
+PRINT_EVERY_N_BATCHES=opts.print_every_n_batches
 
 # # VAE Training
 # ## imports
@@ -24,15 +71,15 @@ mode =  'build' #'load' #
 (x_train, y_train), (x_test, y_test) = load_mnist()
 # ## architecture
 vae = VariationalAutoencoder(
-    input_dim = (28,28,1)
-    , encoder_conv_filters = [32,64,64, 64]
-    , encoder_conv_kernel_size = [3,3,3,3]
-    , encoder_conv_strides = [1,2,2,1]
-    , decoder_conv_t_filters = [64,64,32,1]
-    , decoder_conv_t_kernel_size = [3,3,3,3]
-    , decoder_conv_t_strides = [1,2,2,1]
-    , z_dim = 2
-    , r_loss_factor = 1000
+    input_dim = INPUT_SHAPE
+    , encoder_conv_filters = FILTER
+    , encoder_conv_kernel_size = KERNEL_SIZE
+    , encoder_conv_strides = STRIDE
+    , decoder_conv_t_filters = D_FILTER
+    , decoder_conv_t_kernel_size = D_KERNEL_SIZE
+    , decoder_conv_t_strides = D_STRIDE
+    , z_dim = Z_DIM
+    , r_loss_factor = R_LOSS_FACTOR
 )
 if mode == 'build':
     vae.save(RUN_FOLDER)
@@ -43,12 +90,7 @@ vae.encoder.summary()
 vae.decoder.summary()
 
 # ## train and save
-LEARNING_RATE = 0.0005
 vae.compile(LEARNING_RATE)
-BATCH_SIZE = 32
-EPOCHS = 200
-PRINT_EVERY_N_BATCHES = 100
-INITIAL_EPOCH = 0
 print(RUN_FOLDER)
 vae.train(     
     x_train
