@@ -28,9 +28,9 @@ if opts.quiet == True:
 BATCH_SIZE=opts.batch_size
 LEARNING_RATE=opts.learning_rate
 
-FILTER=(32,32,64,64)
-KERNEL_SIZE=(3,3,3,3)
-STRIDE=(1,2,1,2)
+FILTER=opts.filter
+KERNEL_SIZE=opts.kernel_size
+STRIDE=opts.stride
 
 import numpy as np
 
