@@ -201,7 +201,7 @@ class VariationalAutoencoder():
 
 
     def load_weights(self, filepath):
-        self.model.load_weights(filepath)
+        self.model.built=True # weigths won't load without this, model needs to have been "bu        self.model.load_weights(filepath)
 
     def train(self, x_train, batch_size, epochs, run_folder, print_every_n_batches = 100, initial_epoch = 0, lr_decay = 1):
 
