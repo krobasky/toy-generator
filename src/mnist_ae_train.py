@@ -1,5 +1,38 @@
 #!/usr/bin/env python
-# # MNIST Autoencoder
+from generator.argparse import p
+opts=p(
+"""MNIST Encoder.
+  Inputs: 
+    Downloads MNIST from internet
+  Outputs: (STDOUT)
+    - model summary
+    - verbose training epochs
+    - model loss and accuracy in final line"""
+    , epochs=10
+    , learning_rate=0.0005
+    , batch_size=32
+    , input_shape=(32,32,3)
+    , num_classes=10
+    , scale_value=255.0
+    , filter=[64,64,32,1]
+    , kernel_size=[3,3,3,3]
+    , stride=[1,2,2,1]
+    , z_dim = 200
+)
+
+INPUT_SHAPE= opts.input_shape
+SCALE_VALUE= opts.scale_value
+EPOCHS= opts.epochs
+VERBOSE=True
+if opts.quiet == True:
+    VERBOSE=False
+BATCH_SIZE=opts.batch_size
+LEARNING_RATE=opts.learning_rate
+
+FILTER=opts.filter
+KERNEL_SIZE=opts.kernel_size
+STRIDE=opts.stride
+Z_DIM=opts.z_dim
 
 import os
 from generator.loaders import load_mnist
@@ -25,13 +58,13 @@ MODE =  'build' #'load' #
 # ## Define the structure of the neural network
 AE = Autoencoder(
     input_dim = (28,28,1)
-    , encoder_conv_filters = [32,64,64, 64]
-    , encoder_conv_kernel_size = [3,3,3,3]
-    , encoder_conv_strides = [1,2,2,1]
-    , decoder_conv_t_filters = [64,64,32,1]
-    , decoder_conv_t_kernel_size = [3,3,3,3]
-    , decoder_conv_t_strides = [1,2,2,1]
-    , z_dim = 2
+    , encoder_conv_filters = FILTER
+    , encoder_conv_kernel_size = KERNEL_SIZE
+    , encoder_conv_strides = STRIDE
+    , decoder_conv_t_filters = FILTER
+    , decoder_conv_t_kernel_size = KERNEL_SIZE
+    , decoder_conv_t_strides = STRIDE
+    , z_dim = Z_DIM
 )
 
 if MODE == 'build':
@@ -43,15 +76,14 @@ AE.encoder.summary()
 AE.decoder.summary()
 
 # ## Train the autoencoder
-LEARNING_RATE = 0.0005
-BATCH_SIZE = 32
 INITIAL_EPOCH = 0
 AE.compile(LEARNING_RATE)
 AE.train(     
     x_train[:1000]
     , batch_size = BATCH_SIZE
-    , epochs = 200
+    , epochs = EPOCHS
     , run_folder = RUN_FOLDER
     , initial_epoch = INITIAL_EPOCH
+    , verbose = VERBOSE
 )
 

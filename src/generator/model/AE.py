@@ -161,7 +161,7 @@ class Autoencoder():
         self.model.load_weights(filepath)
 
     
-    def train(self, x_train, batch_size, epochs, run_folder, print_every_n_batches = 100, initial_epoch = 0, lr_decay = 1):
+    def train(self, x_train, batch_size, epochs, run_folder, print_every_n_batches = 100, initial_epoch = 0, lr_decay = 1, verbose=True):
 
         custom_callback = CustomCallback(run_folder, print_every_n_batches, initial_epoch, self)
         lr_sched = step_decay_schedule(initial_lr=self.learning_rate, decay_factor=lr_decay, step_size=1)
@@ -178,6 +178,7 @@ class Autoencoder():
             , epochs = epochs
             , initial_epoch = initial_epoch
             , callbacks = callbacks_list
+            , verbose = verbose
         )
 
     def plot_model(self, run_folder):

@@ -1,13 +1,18 @@
 import argparse
 
 
-def p(description,
-      epochs=3,
-      learning_rate=0.0005,
-      batch_size=32,
-      input_shape=(32,32,3),
-      num_classes=10,   
-      scale_value=255.0):
+def p(description
+      , epochs=3
+      , learning_rate=0.0005
+      , batch_size=32
+      , input_shape=(32,32,3)
+      , num_classes=10
+      , scale_value=255.0
+      , filter=(32,32,64,64)
+      , kernel_size=(3,3,3,3)
+      , stride=(1,2,1,2)
+      , z_dim = 200
+      ):
     
     _p = argparse.ArgumentParser(description=description)
     # xxx add arguments only if they're defaults are passed in
@@ -53,6 +58,34 @@ def p(description,
                     default=scale_value,
                     help=f'[{scale_value}] Divide by this value to normalize all samples'
                     )
+    
+    _p.add_argument("--filter", '-f',
+                    type=int,
+                    nargs='+',
+                    default=filter,
+                    help=f'[{filter}] A list of filters that can be used in the model layers',
+                    )
+
+    _p.add_argument("--kernel_size", '-k',
+                    type=int,
+                    nargs='+',
+                    default=kernel_size,
+                    help=f'[{kernel_size}] A list of kernels that, with the filters, can be used in the model layers',
+                    )
+
+    _p.add_argument("--stride", '-t',
+                    type=int,
+                    nargs='+',
+                    default=stride,
+                    help=f'[{stride}] A list of strides that can be used in the model layers',
+                    )
+
+    _p.add_argument("--z_dim", "-z`",
+                    type=int,
+                    default=num_classes,
+                    help=f'[{z_dim}] Number of dimensions in the latent space'
+                    )
+    
     
     opts=_p.parse_args()
     return opts
