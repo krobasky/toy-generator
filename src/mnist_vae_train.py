@@ -28,9 +28,9 @@ opts=p(
 INPUT_SHAPE= opts.input_shape
 SCALE_VALUE= opts.scale_value
 EPOCHS= opts.epochs
-VERBOSE=True
+VERBOSE=1
 if opts.quiet == True:
-    VERBOSE=False
+    VERBOSE=2
 BATCH_SIZE=opts.batch_size
 LEARNING_RATE=opts.learning_rate
 
@@ -91,7 +91,6 @@ vae.decoder.summary()
 
 # ## train and save
 vae.compile(LEARNING_RATE)
-print(RUN_FOLDER)
 vae.train(     
     x_train
     , batch_size = BATCH_SIZE
@@ -99,4 +98,5 @@ vae.train(
     , run_folder = RUN_FOLDER
     , print_every_n_batches = PRINT_EVERY_N_BATCHES
     , initial_epoch = INITIAL_EPOCH
+    , verbose = VERBOSE
 )

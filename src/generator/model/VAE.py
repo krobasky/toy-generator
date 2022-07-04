@@ -201,22 +201,24 @@ class VariationalAutoencoder():
 
 
     def load_weights(self, filepath):
-        self.model.built=True # weigths won't load without this, model needs to have been "bu        self.model.load_weights(filepath)
+        self.model.built=True # weigths won't load without this, model needs to have been "built"
+        self.model.load_weights(filepath)
 
-    def train(self, x_train, batch_size, epochs, run_folder, print_every_n_batches = 100, initial_epoch = 0, lr_decay = 1):
+    def train(self, x_train, batch_size, epochs, run_folder, print_every_n_batches = 100, initial_epoch = 0, lr_decay = 1, verbose=1):
 
         custom_callback = CustomCallback(run_folder, print_every_n_batches, initial_epoch, self)
         lr_sched = step_decay_schedule(initial_lr=self.learning_rate, decay_factor=lr_decay, step_size=1)
         
         checkpoint_filepath=os.path.join(run_folder, "weights/weights-{epoch:03d}.h5")
-        checkpoint1 = ModelCheckpoint(checkpoint_filepath, save_weights_only = True, verbose=1)
-        checkpoint2 = ModelCheckpoint(os.path.join(run_folder, 'weights/weights.h5'), save_weights_only = True, verbose=1)
+        checkpoint1 = ModelCheckpoint(checkpoint_filepath, save_weights_only = True, verbose=verbose)
+        checkpoint2 = ModelCheckpoint(os.path.join(run_folder, 'weights/weights.h5'), save_weights_only = True, verbose=verbose)
 
         callbacks_list = [checkpoint1, checkpoint2, custom_callback, lr_sched]
 
         self.model.fit(     
             x_train
             , x_train
+            , verbose = verbose
             , batch_size = batch_size
             , shuffle = True
             , epochs = epochs
@@ -226,7 +228,7 @@ class VariationalAutoencoder():
 
 
 
-    def train_with_generator(self, data_flow, epochs, steps_per_epoch, run_folder, print_every_n_batches = 100, initial_epoch = 0, lr_decay = 1, ):
+    def train_with_generator(self, data_flow, epochs, steps_per_epoch, run_folder, print_every_n_batches = 100, initial_epoch = 0, lr_decay = 1, verbose=1):
 
         custom_callback = CustomCallback(run_folder, print_every_n_batches, initial_epoch, self)
         lr_sched = step_decay_schedule(initial_lr=self.learning_rate, decay_factor=lr_decay, step_size=1)
@@ -247,7 +249,7 @@ class VariationalAutoencoder():
             , initial_epoch = initial_epoch
             , callbacks = callbacks_list
             , steps_per_epoch=steps_per_epoch
-            , verbose = 0
+            , verbose = verbose
             )
 
 

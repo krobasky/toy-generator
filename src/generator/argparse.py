@@ -102,13 +102,13 @@ def p(description
     _p.add_argument("--d_stride", '-dt',
                     type=int,
                     nargs='+',
-                    default=stride,
+                    default=d_stride,
                     help=f'[{d_stride}] A list of strides that can be used in the model layers',
                     )
 
     _p.add_argument("--z_dim", "-z`",
                     type=int,
-                    default=num_classes,
+                    default=z_dim,
                     help=f'[{z_dim}] Number of dimensions in the latent space'
                     )
     

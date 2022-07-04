@@ -20,9 +20,9 @@ NUM_CLASSES = opts.num_classes
 INPUT_SHAPE= opts.input_shape
 SCALE_VALUE= opts.scale_value
 EPOCHS= opts.epochs
-VERBOSE=True
+VERBOSE=1
 if opts.quiet == True:
-    VERBOSE=False
+    VERBOSE=2
 BATCH_SIZE=opts.batch_size
 LEARNING_RATE=opts.learning_rate
 
