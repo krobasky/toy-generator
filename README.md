@@ -223,6 +223,21 @@ Detailed steps:
 
 or get it from kaggle: https://www.kaggle.com/datasets/jessicali9530/celeba-dataset?resource=download
 
+**Note**:
+To use a batch_size of 32 (recommended), the number of files should be divisible by 8, but this dataset has len(filenames) % 8 = 7, so remove 7 files; something like this:
+
+```
+cd data/celeb/class_1
+mv 202599.jpg 202598.jpg 202597.jpg 202596.jpg 202595.jpg 202594.jpg 202593.jpg ../../celeb-extras
+```
+
+If you don't ensure the number of files is a multiple of the batch-size, you may get an error similar to the following with tensorflow v2:
+```
+ValueError: operands could not be broadcast together with shapes (32,) (14,) (32,)
+W tensorflow/core/kernels/data/generator_dataset_op.cc:108] Error occurred when finalizing GeneratorDataset iterator: FAILED_PRECONDITION: Python interpreter state is not initialized. The process may be terminated.
+
+```
+
 ### Music3 data and software
 
 Install music3 data for the music generator. These commands only works for ubuntu:

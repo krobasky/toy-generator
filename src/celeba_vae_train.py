@@ -34,6 +34,11 @@ INPUT_DIM = (128,128,3)
 BATCH_SIZE = 32
 filenames = np.array(glob(os.path.join(DATA_FOLDER, '*/*.jpg')))
 NUM_IMAGES = len(filenames)
+extra_images = NUM_IMAGES % BATCH_SIZE
+if extra_images != 0:
+    print(f"ERROR: number of images[{NUM_IMAGES}] is not a multiple of batch size[{BATCH_SIZE}]; Please remove [{extra_images}] images from folder=[{DATA_FOLDER}]")
+    exit()
+
 data_gen = ImageDataGenerator(rescale=1./255)
 data_flow = data_gen.flow_from_directory(DATA_FOLDER
                                          , target_size = INPUT_DIM[:2]
