@@ -25,6 +25,8 @@ Applications should be run from `src/`, relative to the `src/generator` module.
 
 After setting up the environment and retrieving the requisite datasets, run the application with `-h` to list usage.
 
+Trained models for some of these applications are provided under `saved_models`, where noted below.
+
 ### Multi Layer Perceptron MLP
 
 No data needs to be retrieved for this simple application (not generative).
@@ -46,11 +48,11 @@ No data needs to be retrieved for this simple application (not generative).
 ### Variational Autoencoder VAE
 The VAEs can be run on MNIST hand-writing data as follows:
  - `python mnist_vae_train.py`
- - `python mnist_vae_analysis.py`
+ - `python mnist_vae_analysis.py` - can run immediately by copying model from `saved_models/mnist_vae/` to `src/run/vae/0001_digits/`
  
  Install the celeb-A data (see below) to run the following:
- - `python celeba_vae_train.py`
- - `python celeba_vae_analysis.py`
+ - `python celeba_vae_train.py` - training takes hours on a consumer-grade GPU
+ - `python celeba_vae_analysis.py` - can run immediately by copying model from `saved_models/celeb_vae/` to `src/run/vae/0001_faces/`
 
 ### Generative Adversarial Network GAN
 Coming Soon!
@@ -222,7 +224,13 @@ Detailed steps:
  8. Delete the first line with count of the number of lines in the file (202599).
  9. Prepend the header line that start with, "5_o_Clock_Shadow" with "image_id,...".
 
+Something like this:
+```
+cat list_attr_celeba.txt | tr -s ' '| sed 's/ /,/g' |tail +2|sed 's/5_o_Clock_Shadow/image_id,5_o_Clock_Shadow/g'> src/data/celeb/list_attr_celeba.csv
+```
+
 or get it from kaggle: https://www.kaggle.com/datasets/jessicali9530/celeba-dataset?resource=download
+
 
 **Note**:
 To use a batch_size of 32 (recommended), the number of files should be divisible by 8, but this dataset has len(filenames) % 8 = 7, so remove 7 files; something like this:
@@ -261,7 +269,6 @@ Read more here:
 
 # Future
 Following are future features:
-* celeb analysis
 * GAN
 * args to celeb, gan
 * random_seed to models
