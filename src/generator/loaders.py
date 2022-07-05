@@ -136,7 +136,7 @@ def load_model(model_class, folder):
         params = pickle.load(f)
 
     model = model_class(*params)
-
+    model.built=True # weigths won't load without this, model needs to have been "built"
     model.load_weights(os.path.join(folder, 'weights/weights.h5'))
 
     return model
