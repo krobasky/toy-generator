@@ -17,6 +17,7 @@
   - [MNIST](#mnist)
   - [CelebA](#celeba)
   - [Music3 data and software](#music3-data-and-software)
+- [Future](#future)
 
 ## Running apps
 
@@ -257,3 +258,12 @@ More music:
  
 Read more here:
  * https://towardsdatascience.com/how-to-generate-music-using-a-lstm-neural-network-in-keras-68786834d4c5
+
+# Future
+Following are future features:
+* celeb analysis
+* GAN
+* args to celeb, gan
+* random_seed to models
+* history to models
+
