@@ -25,29 +25,29 @@ class ImageLabelLoader():
         self.image_folder = image_folder
         self.target_size = target_size
 
-    def build(self, att, batch_size, label = None):
+    def build(self, df, number_to_show=10, label = None, scale_value=255, shuffle=True):
 
-        data_gen = ImageDataGenerator(rescale=1./255)
+        data_gen = ImageDataGenerator(rescale=1./scale_value)
         if label:
             data_flow = data_gen.flow_from_dataframe(
-                att
+                df
                 , self.image_folder
                 , x_col='image_id'
                 , y_col=label
                 , target_size=self.target_size 
-                , class_mode='other'
-                , batch_size=batch_size
-                , shuffle=True
+                , class_mode='raw'
+                , batch_size=number_to_show
+                , shuffle=shuffle
             )
         else:
             data_flow = data_gen.flow_from_dataframe(
-                att
+                df
                 , self.image_folder
                 , x_col='image_id'
                 , target_size=self.target_size 
                 , class_mode='input'
-                , batch_size=batch_size
-                , shuffle=True
+                , batch_size=number_to_show
+                , shuffle=shuffle
             )
 
         return data_flow
